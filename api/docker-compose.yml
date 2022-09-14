@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  postgres:
+    container_name: pg_country
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      - name=value
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD}
+    ports:
+      - ${PG_PORT}:${PG_REFPORT}
