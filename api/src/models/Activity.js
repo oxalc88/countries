@@ -27,7 +27,7 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING,
             validate: {
                 isIn: {
-                    args: [['verano', 'otoño', 'invierno', 'primeravera']],
+                    args: [['spring', 'summer', 'autumm', 'winter', 'all year']],
                     msg: 'Escoja una estación válida'
                 }
             },

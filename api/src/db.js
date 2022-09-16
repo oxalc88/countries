@@ -40,7 +40,7 @@ const CountryActivity = sequelize.define('country_activity', {
     type: DataTypes.DATE,
     field: 'created_at',
     defaultValue: Sequelize.NOW,
-  }
+  },
 }, {
   tableName: 'countries_activities',
   timestamps: false,
@@ -49,12 +49,13 @@ const CountryActivity = sequelize.define('country_activity', {
 
 Country.belongsToMany(Activity, { through: CountryActivity });
 Activity.belongsToMany(Country, { through: CountryActivity });
-Country.hasMany(CountryActivity);
-CountryActivity.belongsTo(Country);
-Activity.hasMany(CountryActivity);
-CountryActivity.belongsTo(Activity);
+// Country.hasMany(CountryActivity);
+// CountryActivity.belongsTo(Country);
+// Activity.hasMany(CountryActivity);
+// CountryActivity.belongsTo(Activity);
 
 module.exports = {
   ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
   conn: sequelize,     // para importart la conexión { conn } = require('./db.js');
+  CountryActivity,     //tabla intermedia
 };

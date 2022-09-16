@@ -1,58 +1,33 @@
 const { Country, Activity } = require('../db');
 const { Op } = require("sequelize");
-//const { Sequelize } = require("sequelize");
+const { searchAll, searchByName, countriesByApi } = require('../services/countries.service');
 
-
-
-const searchAll = async (req, res, next) => {
-    try {
-        const countries = await Country.findAll()
-        res.send(countries);
-    } catch (error) {
-        // res.status(404).json({
-        //     error: error.message
-        // })
-        next(error);
-    }
-};
-
-const searchByName = async (req, res, next, name) => {
-    try {
-        const countryByName = await Country.findOne({
-            where: {
-                [Op.like]: `%${name}%`
-            }
-        });
-        if (!countryByName) {
-            return res.status(404).json({
-                msg: 'País no encontrado'
-            })
-        }
-        res.json(countryByName);
-    } catch (error) {
-        next(error);
-    }
-}
-
-const getCountries = (req, res, next) => {
-    const { name } = req.query;
-    //    return name ? searchAll(req, res, next) : searchByName(req, res, next)
-    if (!name) return searchAll(req, res, next)
-    return searchByName(req, res, next, name)
+const getCountries = async (req, res, next) => {
+    //const { name } = req.query;
+    const count = await Country.count()
+    if (count === 0) return countriesByApi()
+    // else if (!name) return searchAll(req, res, next)
+    // else return searchByName(req, res, next, name)
+    return lookingForCountry(req, res)
 }
 
 const getCountrybyID = async (req, res, next) => {
     const { idPais } = req.params
     try {
         const countryByID = await Country.findByPk(idPais, {
-            include: Activity,
+            include: {
+                model: Activity,
+                atributes: {
+                    exclude: ['id', 'createdAt']
+                },
+                through: {
+                    attributes: [],
+                }
+            },
         });
         res.json(countryByID);
     } catch (error) {
-        // res.status(404).json({
-        //     error: error.message
-        // })
-        next(error);
+        next(error.message);
     }
 }
 
