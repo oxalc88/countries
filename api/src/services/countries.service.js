@@ -32,7 +32,7 @@ const searchAll = async (req, res, next) => {
 // }
 
 
-const lookingForCountry = async (req, res, next) => {
+const lookingForCountry = async (req, res) => {
     const { name } = req.query;
     try {
         if (!name) {
@@ -40,7 +40,7 @@ const lookingForCountry = async (req, res, next) => {
             res.send(countries);
         }
         else {
-            const countryByName = await Country.findAll({
+            const countryByName = await Country.findOne({
                 where: {
                     name: {
                         [Op.like]: `%${name}%`
@@ -48,12 +48,12 @@ const lookingForCountry = async (req, res, next) => {
                 }
             });
             if (!countryByName) {
-                return res.status(404).json({ error: `There is no country with name: ${name}` })
+                return res.status(404).send({ error: `There is no country with name: ${name}` })
             }
         }
         return res.send(countryByName)
     } catch (error) {
-        next(error);
+        console.error(error);
     }
 };
 

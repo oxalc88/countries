@@ -1,8 +1,8 @@
 const { Country, Activity } = require('../db');
 const { Op } = require("sequelize");
-const { searchAll, searchByName, countriesByApi } = require('../services/countries.service');
+const { searchAll, searchByName, countriesByApi, lookingForCountry } = require('../services/countries.service');
 
-const getCountries = async (req, res, next) => {
+const getCountries = async (req, res) => {
     //const { name } = req.query;
     const count = await Country.count()
     if (count === 0) return countriesByApi()
