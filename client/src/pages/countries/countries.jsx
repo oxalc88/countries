@@ -15,6 +15,8 @@ const Countries = () => {
 
     const dispatch = useDispatch();
 
+    //para filtrar por continente y actividad, además de ordenar por nombre y poblacion
+
     const continentFilter = countries.map(c => { return c.continent })
     const continents = new Set(continentFilter)
     const activity = new Set(activities.name)
@@ -37,14 +39,13 @@ const Countries = () => {
         }
     )
 
-
-
+    //para filtrar por nombre y paginado
     let countriesPaginated = countries.slice(current.page, current.page + 10)
-    const countryFiltered = countries.filter(country => country.name.toLowerCase().includes(current.search.toLowerCase()))
+    const country_searched_by_name = countries.filter(country => country.name.toLowerCase().includes(current.search.toLowerCase()))
 
-    let countriesFiltered = () => {
+    let countriesFilteredByName = () => {
         if (!current.search) return countriesPaginated
-        return countryFiltered.slice(current.page, current.page + 10)
+        return country_searched_by_name.slice(current.page, current.page + 10)
     }
 
 
@@ -68,9 +69,37 @@ const Countries = () => {
         setCurrent({ ...current, search: '' });
     }
 
+    const orderByName = (elem) => {
+        let countries_ordered_by_name = (elem === filters.orderPais[0]) ? countries.sort((a, b) => a.name - b.name) : countries.reverse((a, b) => a.name - b.name);
+        return countries_ordered_by_name
+    }
+
+    const orderByPoblation = (elem) => {
+        const countries_ordered_by_poblation = (elem === filters.orderPob[0]) ? countries.sort((a, b) => a.population - b.population) : countries.reverse((a, b) => a.population - b.population);
+        return countries_ordered_by_poblation
+    }
+
+    const filterByContinent = (elem) => {
+        if (elem === filters.continent[0]) countriesFilteredByName()
+        const filtered = countries.filter(country => country.continent === elem.value);
+        return filtered
+    }
+
+    const handlers = (e, value) => {
+        const handlerType = {
+            'orderPais': orderByName(value),
+            'orderPob': orderByPoblation(value),
+            'continent': filterByContinent(value),
+            'default': countriesFilteredByName(),
+        }
+        return handlerType[e] || handlerType['default']
+    }
+
     const handleSelect = (e) => {
         setCurrent({ ...current, [e.target.name]: e.target.value, });
+        return handlers(e.target.name, e.target.value)
     }
+
 
     useEffect(() => {
         dispatch(setCountries())
@@ -94,7 +123,8 @@ const Countries = () => {
                 </div>
             </React.StrictMode>
             <h1>Paises</h1>
-            <CountryList countries={countriesFiltered()} />
+            <CountryList countries={countriesFilteredByName()} />
+            {console.log(handlers)}
             {/* <Pagination
                 data={countries}
                 RenderComponent={CountryCard}
