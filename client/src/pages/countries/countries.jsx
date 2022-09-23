@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import CountryList from '../../Components/CountryList/CountryList';
-import { setCountries } from '../../redux/actions';
+import { filterByContinent, orderByNameAsc, orderByNameDesc, orderByPopulationAsc, orderByPopulationDesc, setCountries } from '../../redux/actions';
 import Loading from '../../Components/Loading/Loading';
 import { Pagination } from '../../Components/Pagination/Pagination';
 import SearchBox from '../../Components/SearchBox/SearchBox';
@@ -22,8 +22,8 @@ const Countries = () => {
     const activity = new Set(activities.name)
 
     const filters = {
-        orderPais: ['ASC', 'DESC'],
-        orderPob: ['ASC', 'DESC'],
+        orderPais: ['Alfabéticamente', 'A - Z', 'Z - A'],
+        orderPob: ['Quien tiene', 'MAYOR', 'MENOR'],
         continent: ['Todos', ...continents],
         activity: ['Todas', ...activity],
     }
@@ -39,7 +39,37 @@ const Countries = () => {
         }
     )
 
-    //para filtrar por nombre y paginado
+    const onFilterContinent = (e) => {
+        let contientToFilter = e.target.value
+        dispatch(filterByContinent(contientToFilter))
+        setCurrent({ ...current, page: 0, continent: contientToFilter, });
+    }
+
+    const countriesAtoZ = (e) => {
+        let countriesToOrder = e.target.value
+        let order;
+        if (countriesToOrder !== filters.orderPais[2]) {
+            order = dispatch(orderByNameAsc(countriesToOrder))
+        } else {
+            order = dispatch(orderByNameDesc(countriesToOrder))
+        }
+        setCurrent({ ...current, page: 0, orderPais: countriesToOrder, });
+        return order
+    }
+
+    const orderByPopulation = (e) => {
+        let countriesToOrder = e.target.value
+        let order;
+        if (countriesToOrder !== filters.orderPob[1]) {
+            order = dispatch(orderByPopulationAsc(countriesToOrder))
+        } else {
+            order = dispatch(orderByPopulationDesc(countriesToOrder))
+        }
+        setCurrent({ ...current, page: 0, orderPob: countriesToOrder, });
+        return order
+    }
+
+    //para buscar por nombre y paginado
     let countriesPaginated = countries.slice(current.page, current.page + 10)
     const country_searched_by_name = countries.filter(country => country.name.toLowerCase().includes(current.search.toLowerCase()))
 
@@ -65,39 +95,7 @@ const Countries = () => {
 
     const onSubmit = () => {
         if (current.search.length === 0) return alert('Debe colocar un Pais')
-        //dispatch(searchCountryByName(current.search));
         setCurrent({ ...current, search: '' });
-    }
-
-    const orderByName = (elem) => {
-        let countries_ordered_by_name = (elem === filters.orderPais[0]) ? countries.sort((a, b) => a.name - b.name) : countries.reverse((a, b) => a.name - b.name);
-        return countries_ordered_by_name
-    }
-
-    const orderByPoblation = (elem) => {
-        const countries_ordered_by_poblation = (elem === filters.orderPob[0]) ? countries.sort((a, b) => a.population - b.population) : countries.reverse((a, b) => a.population - b.population);
-        return countries_ordered_by_poblation
-    }
-
-    const filterByContinent = (elem) => {
-        if (elem === filters.continent[0]) countriesFilteredByName()
-        const filtered = countries.filter(country => country.continent === elem.value);
-        return filtered
-    }
-
-    const handlers = (e, value) => {
-        const handlerType = {
-            'orderPais': orderByName(value),
-            'orderPob': orderByPoblation(value),
-            'continent': filterByContinent(value),
-            'default': countriesFilteredByName(),
-        }
-        return handlerType[e] || handlerType['default']
-    }
-
-    const handleSelect = (e) => {
-        setCurrent({ ...current, [e.target.name]: e.target.value, });
-        return handlers(e.target.name, e.target.value)
     }
 
 
@@ -107,16 +105,13 @@ const Countries = () => {
 
 
 
-
-
-
     return (
         <div>
             <React.StrictMode>
                 <div>
-                    <Dropdown name={'orderPais'} value={current.orderPais} label={'Ordenar por: '} onChange={handleSelect} options={filters.orderPais} />
-                    <Dropdown name={'orderPob'} value={current.orderPob} label={'Poblacion: '} onChange={handleSelect} options={filters.orderPob} />
-                    <Dropdown name={'continent'} value={current.continent} label={'Filtrar por :'} onChange={handleSelect} options={filters.continent} />
+                    <Dropdown name={'orderPais'} value={current.orderPais} label={'Mostrar Países: '} onChange={countriesAtoZ} options={filters.orderPais} />
+                    <Dropdown name={'orderPob'} value={current.orderPob} label={'Poblacion : '} onChange={orderByPopulation} options={filters.orderPob} />
+                    <Dropdown name={'continent'} onChange={onFilterContinent} value={current.continent} label={'Filtrar por :'} options={filters.continent} />
 
                     <SearchBox value={current.search} onchange={onSearchChange} onSubmit={onSubmit} />
                     <Pagination nextpage={nextPage} prevPage={prevPage} />
@@ -124,20 +119,6 @@ const Countries = () => {
             </React.StrictMode>
             <h1>Paises</h1>
             <CountryList countries={countriesFilteredByName()} />
-            {console.log(handlers)}
-            {/* <Pagination
-                data={countries}
-                RenderComponent={CountryCard}
-                title="Country"
-                pageLimit={5}
-                dataLimit={10}
-            /> */}
-            {/* {console.log(filters.order)}
-            {console.log(filters.continent)} */}
-            {/* {console.log(continentFilter)}
-            {console.log(continents)} */}
-
-
 
             {
                 isLoading && <Loading />

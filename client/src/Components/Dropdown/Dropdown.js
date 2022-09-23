@@ -1,7 +1,8 @@
 import React from 'react'
 import DropdownItem from './DropdownItem'
 
-function Dropdown({ value, onChange, options, label, name }) {
+function Dropdown({ value, onChange, options, label, name, valueToFilter }) {
+
     return (
         <div>
             <label>
@@ -17,8 +18,6 @@ function Dropdown({ value, onChange, options, label, name }) {
                     )}
                 </select>
             </label>
-            {/* {console.log(value)}
-            {console.log(options)} */}
 
         </div>
     )

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { FILTER_CONTINENT, GET_COUNTRY_BY_NAME, SET_COUNTRIES, SET_COUNTRY_DETAIL, SET_PAGES } from "./types";
+import { FILTER_CONTINENT, GET_COUNTRY_BY_NAME, SET_COUNTRIES, SET_COUNTRY_DETAIL, SET_PAGES, ORDER_COUNTRIES_BY_POPULATION_ASC, ORDER_COUNTRIES_BY_NAME_ASC, ORDER_COUNTRIES_BY_NAME_DESC, ORDER_COUNTRIES_BY_POPULATION_DESC } from "./types";
 const { REACT_APP_API_URL } = process.env
 
 // export const setCountries = (payload) => ({
@@ -33,33 +33,52 @@ export const setCountryDetail = (id) => async (dispatch) => {
 };
 
 
-export const searchCountryByName = (name) => async (dispatch) => {
-    try {
-        const getCountryName = axios.get(`${REACT_APP_API_URL}/?name=${name}`);
-        return dispatch({
-            type: GET_COUNTRY_BY_NAME,
-            payload: getCountryName.data,
-        });
-    } catch (error) {
-        return console.error(error.message);
-    }
-};
-//     return function (dispatch) {
-//         return fetch(`${API_URL}?name=${name}`)
-//             .then(data => data.json())
-//             .then(res => {
-//                 return dispatch({
-//                     type: GET_COUNTRY_BY_NAME,
-//                     payload: res,
-//                 })
-//             })
+// export const searchCountryByName = (name) => async (dispatch) => {
+//     try {
+//         const getCountryName = axios.get(`${REACT_APP_API_URL}/?name=${name}`);
+//         return dispatch({
+//             type: GET_COUNTRY_BY_NAME,
+//             payload: getCountryName.data,
+//         });
+//     } catch (error) {
+//         return console.error(error.message);
 //     }
 // };
 
-export const filter_continent = (query) => ({
-    type: FILTER_CONTINENT,
-    payload: query,
-})
+export const orderByNameAsc = (payload) => {
+    return {
+        type: ORDER_COUNTRIES_BY_NAME_ASC,
+        payload
+    }
+}
+
+export const orderByNameDesc = (payload) => {
+    return {
+        type: ORDER_COUNTRIES_BY_NAME_DESC,
+        payload
+    }
+}
+
+export const orderByPopulationAsc = (payload) => {
+    return {
+        type: ORDER_COUNTRIES_BY_POPULATION_ASC,
+        payload
+    }
+}
+
+export const orderByPopulationDesc = (payload) => {
+    return {
+        type: ORDER_COUNTRIES_BY_POPULATION_DESC,
+        payload
+    }
+}
+
+export const filterByContinent = (payload) => {
+    return {
+        type: FILTER_CONTINENT,
+        payload,
+    }
+}
 
 
 
