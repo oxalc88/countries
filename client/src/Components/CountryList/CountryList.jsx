@@ -9,7 +9,7 @@ const CountryList = ({ countries }) => {
             <div className="CountryList">
                 {countries &&
                     countries.map((country) => {
-                        return <CountryCard name={country.name} continent={country.continent} key={country.id} capital={country.capital} flag={country.flag} />
+                        return <CountryCard name={country.name} continent={country.continent} key={country.id} capital={country.capital} flag={country.flag} id={country.id} />
                     })}
             </div>
         </>

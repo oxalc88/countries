@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
+import FormInput from '../../Components/FormInput/FormInput'
+import styles from './activities.module.css'
 
 function Activities() {
     //const [options, setOptions] = useState([])
     //const [radioValue, setRadioValues] = useState(1)
-    let [input, setInput] = useState({
+    let [valueInput, setValueInput] = useState({
         name: '',
         difficulty: 1,
         duration: 1,
@@ -12,13 +14,13 @@ function Activities() {
     })
 
     let handleChange = (e) => {
-        setInput((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+        setValueInput((prev) => ({ ...prev, [e.target.name]: e.target.value }))
     }
 
     let handleSubmit = (e) => {
         e.preventDefault();
-        console.log(input);
-        setInput({
+        console.log(valueInput);
+        setValueInput({
             name: '',
             difficulty: '',
             duration: '',
@@ -27,22 +29,54 @@ function Activities() {
         })
     }
 
+    const letters = '^[A-Za-z]+$'
+
+    const validator = {
+        errorname: 'Ingresar solo letras y no dejar vacío',
+        errornumber: 'escoge un valor de 1 a 5',
+        pattern: letters,
+        required: true,
+    }
+
     return (
-        <>
-            <div>
-                <h2>Crear Actividad</h2>
-            </div>
+        <div className={styles.activities} >
+            {/* <div>
+            </div> */}
+
             <form onSubmit={e => handleSubmit(e)} >
-                <div>
-                    <label>Nombre Actividad</label>
-                    <input
-                        type={'text'}
-                        name={'name'}
-                        value={input.name}
-                        onChange={e => handleChange(e)}
-                    />
-                </div>
-                <div>
+                <h2>Crear Actividad</h2>
+                <FormInput
+                    type={'text'}
+                    name={'name'}
+                    value={valueInput.name}
+                    onChange={e => handleChange(e)}
+                    label={'Nombre Actividad'}
+                    errorMessage={validator.errorname}
+                    {...validator}
+                />
+                <FormInput
+                    type={'number'}
+                    name={'difficulty'}
+                    value={valueInput.difficulty}
+                    onChange={e => handleChange(e)}
+                    label={'Dificultad'}
+                    min={1}
+                    max={5}
+                    errorMessage={validator.errornumber}
+
+                />
+                <FormInput
+                    type={'number'}
+                    name={'duration'}
+                    value={valueInput.duration}
+                    onChange={e => handleChange(e)}
+                    label={'Duración'}
+                    min={1}
+                    max={5}
+                    errorMessage={validator.errornumber}
+
+                />
+                {/* <div>
                     <label>Dificultad</label>
                     <input
                         type={'number'}
@@ -52,8 +86,8 @@ function Activities() {
                         value={input.difficulty}
                         onChange={e => handleChange(e)}
                     />
-                </div>
-                <div>
+                </div> */}
+                {/* <div>
                     <label>Duracion</label>
                     <input
                         type={'number'}
@@ -63,14 +97,14 @@ function Activities() {
                         value={input.duration}
                         onChange={e => handleChange(e)}
                     />
-                </div>
+                </div> */}
                 <div>
                     <label>Temporada de la Actividad</label>
                     <select
-                        value={input.season.name}
+                        value={valueInput.season.name}
                         onChange={e => handleChange(e)}
                     >
-                        {input.season.map((s) => (
+                        {valueInput.season.map((s) => (
                             <option key={s.name} value={s.name}>
                                 {s.name}
                             </option>))
@@ -80,19 +114,19 @@ function Activities() {
                 <div>
                     <label>Pais</label>
                     <select
-                        value={input.country.name}
+                        value={valueInput.country.name}
                         onChange={e => handleChange(e)}
                     >
-                        {input.country.map((c) => (
+                        {valueInput.country.map((c) => (
                             <option key={c.name} value={c.name}>
                                 {c.name}
                             </option>))
                         }
                     </select>
                 </div>
-                <input type={'submit'} value={'Crea tu Actividad'} />
+                <input className={styles.formButton} type={'submit'} value={'Crea tu Actividad'} />
             </form>
-        </>
+        </div>
     )
 }
 

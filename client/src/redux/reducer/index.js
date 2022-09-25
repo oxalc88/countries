@@ -1,11 +1,13 @@
-import { FILTER_CONTINENT, IS_LOADING, ORDER_COUNTRIES_BY_NAME_ASC, ORDER_COUNTRIES_BY_NAME_DESC, ORDER_COUNTRIES_BY_POPULATION_ASC, ORDER_COUNTRIES_BY_POPULATION_DESC, SET_COUNTRIES } from "../actions/types"
+import { FILTER_CONTINENT, IS_LOADING, ORDER_COUNTRIES_BY_NAME_ASC, ORDER_COUNTRIES_BY_NAME_DESC, ORDER_COUNTRIES_BY_POPULATION_ASC, ORDER_COUNTRIES_BY_POPULATION_DESC, SEARCH_COUNTRY_BY_NAME, SET_COUNTRIES, SET_COUNTRY_DETAIL, SET_PAGES } from "../actions/types"
 
 const initialState = {
     countries: [],
-    countryDetail: [],
+    countryDetailed: [],
     activities: [],
     isLoading: false,
     filteredContinent: [],
+    pages: 0,
+    searchValue: '',
 }
 
 export const rootReducer = (state = initialState, action) => {
@@ -16,6 +18,12 @@ export const rootReducer = (state = initialState, action) => {
                 ...state,
                 filteredContinent: action.payload,
                 countries: action.payload
+            };
+
+        case SET_COUNTRY_DETAIL:
+            return {
+                ...state,
+                countryDetailed: action.payload
             };
 
         case ORDER_COUNTRIES_BY_NAME_ASC:
@@ -57,6 +65,21 @@ export const rootReducer = (state = initialState, action) => {
             return {
                 ...state,
                 countries: filteredContient
+            }
+
+        case SEARCH_COUNTRY_BY_NAME:
+
+            return {
+                ...state,
+                pages: action.payload.page,
+                search: action.payload.value
+            }
+
+
+        case SET_PAGES:
+            return {
+                ...state,
+                pages: action.payload.page,
             }
 
         case IS_LOADING:

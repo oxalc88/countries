@@ -2,16 +2,19 @@ import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import CountryList from '../../Components/CountryList/CountryList';
 import { filterByContinent, orderByNameAsc, orderByNameDesc, orderByPopulationAsc, orderByPopulationDesc, setCountries } from '../../redux/actions';
-import Loading from '../../Components/Loading/Loading';
+//import Loading from '../../Components/Loading/Loading';
 import { Pagination } from '../../Components/Pagination/Pagination';
-import SearchBox from '../../Components/SearchBox/SearchBox';
+//import SearchBox from '../../Components/SearchBox/SearchBox';
 import Dropdown from '../../Components/Dropdown/Dropdown';
+import SearchBox2 from '../../Components/SearchBox/SearchBox2.jsx';
 
-const Countries = () => {
+const Countries2 = () => {
 
     const countries = useSelector(state => state.countries);
     const isLoading = useSelector(state => state.isLoading);
     const activities = useSelector(state => state.activities);
+    const page = useSelector(state => state.pages)
+    const search = useSelector(state => state.searchValue)
 
     const dispatch = useDispatch();
 
@@ -30,8 +33,8 @@ const Countries = () => {
 
     const [current, setCurrent] = useState(
         {
-            page: 0,
-            search: '',
+            //page: 0,
+            //search: '',
             orderPais: filters.orderPais[0],
             orderPob: filters.orderPob[0],
             continent: filters.continent[0],
@@ -70,33 +73,26 @@ const Countries = () => {
     }
 
     //para buscar por nombre y paginado
-    let countriesPaginated = countries.slice(current.page, current.page + 10)
-    const country_searched_by_name = countries.filter(country => country.name.toLowerCase().includes(current.search.toLowerCase()))
+    let countriesPaginated = countries.slice(page, page + 10)
+    const country_searched_by_name = countries.filter(country => country.name.toLowerCase().includes(search.toLowerCase()))
 
     let countriesFilteredByName = () => {
-        if (!current.search) return countriesPaginated
-        return country_searched_by_name.slice(current.page, current.page + 10)
+        if (!search) return countriesPaginated
+        return country_searched_by_name.slice(page, page + 10)
     }
 
 
-    const nextPage = () => {
-        if (countries.length > current.page + 10) setCurrent({ ...current, page: current.page + 10 })
+    // const nextPage = () => {
+    //     if (countries.length > current.page + 10) setCurrent({ ...current, page: current.page + 10 })
 
-    }
+    // }
 
-    const prevPage = () => {
-        if (current.page > 0)
-            setCurrent({ ...current, page: current.page - 10 })
-    }
+    // const prevPage = () => {
+    //     if (current.page > 0)
+    //         setCurrent({ ...current, page: current.page - 10 })
+    // }
 
-    const onSearchChange = (e) => {
-        setCurrent({ page: 0, search: e.target.value })
-    }
 
-    const onSubmit = () => {
-        if (current.search.length === 0) return alert('Debe colocar un Pais')
-        setCurrent({ ...current, search: '' });
-    }
 
 
     useEffect(() => {
@@ -113,8 +109,8 @@ const Countries = () => {
                     <Dropdown name={'orderPob'} value={current.orderPob} label={'Poblacion : '} onChange={orderByPopulation} options={filters.orderPob} />
                     <Dropdown name={'continent'} onChange={onFilterContinent} value={current.continent} label={'Filtrar por :'} options={filters.continent} />
 
-                    <SearchBox value={current.search} onchange={onSearchChange} onSubmit={onSubmit} />
-                    <Pagination nextpage={nextPage} prevPage={prevPage} />
+                    <SearchBox2 current={current} />
+                    <Pagination page={page} countries={countries} />
                 </div>
             </React.StrictMode>
             <h1>Paises</h1>
@@ -127,4 +123,4 @@ const Countries = () => {
     )
 }
 
-export default Countries
+export default Countries2

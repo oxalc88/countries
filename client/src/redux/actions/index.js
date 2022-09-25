@@ -1,5 +1,5 @@
 import axios from "axios";
-import { FILTER_CONTINENT, GET_COUNTRY_BY_NAME, SET_COUNTRIES, SET_COUNTRY_DETAIL, SET_PAGES, ORDER_COUNTRIES_BY_POPULATION_ASC, ORDER_COUNTRIES_BY_NAME_ASC, ORDER_COUNTRIES_BY_NAME_DESC, ORDER_COUNTRIES_BY_POPULATION_DESC } from "./types";
+import { FILTER_CONTINENT, GET_COUNTRY_BY_NAME, SET_COUNTRIES, SET_COUNTRY_DETAIL, SET_PAGES, ORDER_COUNTRIES_BY_POPULATION_ASC, ORDER_COUNTRIES_BY_NAME_ASC, ORDER_COUNTRIES_BY_NAME_DESC, ORDER_COUNTRIES_BY_POPULATION_DESC, SEARCH_COUNTRY_BY_NAME } from "./types";
 const { REACT_APP_API_URL } = process.env
 
 // export const setCountries = (payload) => ({
@@ -20,15 +20,15 @@ export const setCountries = () => async (dispatch) => {
 }
 
 
-export const setCountryDetail = (id) => async (dispatch) => {
+export const CountryDetailed = (id) => async (dispatch) => {
     try {
-        const getDetail = axios.get(`${REACT_APP_API_URL}/${id}`);
+        const getDetail = await axios.get(`${REACT_APP_API_URL}/${id}`);
         return dispatch({
             type: SET_COUNTRY_DETAIL,
             payload: getDetail.data,
         });
     } catch (error) {
-        return Error(error.message);
+        return console.error(error);
     }
 };
 
@@ -80,9 +80,12 @@ export const filterByContinent = (payload) => {
     }
 }
 
-
-
 export const setPages = (payload) => ({
     type: SET_PAGES,
+    payload
+})
+
+export const onSearchChange = (payload) => ({
+    type: SEARCH_COUNTRY_BY_NAME,
     payload
 })

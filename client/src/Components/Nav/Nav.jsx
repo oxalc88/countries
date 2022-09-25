@@ -13,6 +13,9 @@ const Nav = () => {
                     <NavLink className={styles.link_style} to={'/countries'}>Countries</NavLink>
                 </li>
                 <li className={styles.nav_item}>
+                    <NavLink className={styles.link_style} to={'/countries2'}>Countries2</NavLink>
+                </li>
+                <li className={styles.nav_item}>
                     <NavLink className={styles.link_style} to={'/activities'}>Activities</NavLink>
                 </li>
             </ul>
