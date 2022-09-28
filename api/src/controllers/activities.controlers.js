@@ -21,6 +21,7 @@ const createActivity = async (req, res, next) => {
             difficulty,
             duration,
             season,
+            countryId,
         }
         );
         //const ifActivityExits = await Activity.findOne
@@ -35,7 +36,7 @@ const createActivity = async (req, res, next) => {
         //buscando el país a añadir
         const countryToAdd = await Country.findByPk(countryId)
 
-        await newActivity.addCountry(countryToAdd, { through: CountryActivity })
+        newActivity.addCountry(countryToAdd, { through: CountryActivity })
 
         res.send(newActivity)
 

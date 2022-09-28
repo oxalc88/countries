@@ -5,7 +5,7 @@ const FormInput = ({ label, name, value, onChange, errorMessage, ...validator })
 
     const [focused, setFocused] = useState(false);
 
-    const handleFocus = (e) => {
+    const handleFocus = () => {
         setFocused(true)
     }
 

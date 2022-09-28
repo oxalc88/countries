@@ -1,35 +1,50 @@
-import React, { useState } from 'react'
-import FormInput from '../../Components/FormInput/FormInput'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import FormInput from '../../Components/Form/FormInput'
+import FormTodoCountries from '../../Components/Form/FormTodoCountries';
+import { createActivity, orderByNameAsc, setCountries } from '../../redux/actions';
 import styles from './activities.module.css'
 
 function Activities() {
-    //const [options, setOptions] = useState([])
-    //const [radioValue, setRadioValues] = useState(1)
+
+
+    const countries = useSelector(state => state.countries);
+    const dispatch = useDispatch();
+
+
     let [valueInput, setValueInput] = useState({
         name: '',
         difficulty: 1,
         duration: 1,
-        season: [{ name: 'Toda la Temporada' },],
-        country: [{ name: '' }]
+        season: [],
+        searchCountry: '',
+        //countryId: ''
+
     })
 
-    let handleChange = (e) => {
-        setValueInput((prev) => ({ ...prev, [e.target.name]: e.target.value }))
-    }
+    let seasons = [
+        { name: 'Escoge Temporada', value: 'default' },
+        { name: 'Todo el año', value: 'all year' },
+        { name: 'Verano', value: 'summer' },
+        { name: 'Otoño', value: 'autumm' },
+        { name: 'Invierno', value: 'winter' },
+        { name: 'Primavera', value: 'spring' }
+    ]
 
     let handleSubmit = (e) => {
         e.preventDefault();
-        console.log(valueInput);
+        console.log('form Activity', valueInput);
+        dispatch(createActivity(valueInput))
         setValueInput({
             name: '',
             difficulty: '',
             duration: '',
-            season: [{ name: '' },],
-            country: [{ name: '' }]
+            season: [],
+            searchCountry: '',
         })
     }
 
-    const letters = '^[A-Za-z]+$'
+    const letters = '^[a-zA-Z\s]*$'
 
     const validator = {
         errorname: 'Ingresar solo letras y no dejar vacío',
@@ -38,10 +53,36 @@ function Activities() {
         required: true,
     }
 
+
+    let handleChange = (e) => {
+        e.preventDefault();
+        setValueInput((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+    }
+
+    let handleSelect = (e) => {
+        const countryFiltered = countries.filter(country => country.id === e.target.value)
+        // const order = dispatch(orderByNameAsc())
+        // const countryFiltered = order.filter(country => country.id === e.target.value);
+        e.preventDefault();
+        setValueInput((prev) => ({ ...prev, searchCountry: e.target.value, }))
+    }
+
+    const onSearchChange = (e) => {
+        e.preventDefault()
+        setValueInput({ ...valueInput, searchCountry: e.target.value })
+    }
+
+    const onClose = (id) => {
+        const discardCountries = valueInput.setCountries.filter(dc => dc.id !== id)
+        setValueInput({ ...valueInput, searchCountry: discardCountries })
+    }
+
+    useEffect(() => {
+        dispatch(setCountries())
+    }, [dispatch]);
+
     return (
         <div className={styles.activities} >
-            {/* <div>
-            </div> */}
 
             <form onSubmit={e => handleSubmit(e)} >
                 <h2>Crear Actividad</h2>
@@ -76,54 +117,50 @@ function Activities() {
                     errorMessage={validator.errornumber}
 
                 />
-                {/* <div>
-                    <label>Dificultad</label>
-                    <input
-                        type={'number'}
-                        min={1}
-                        max={5}
-                        name={'difficulty'}
-                        value={input.difficulty}
-                        onChange={e => handleChange(e)}
-                    />
-                </div> */}
-                {/* <div>
-                    <label>Duracion</label>
-                    <input
-                        type={'number'}
-                        min={1}
-                        max={5}
-                        name={'duration'}
-                        value={input.duration}
-                        onChange={e => handleChange(e)}
-                    />
-                </div> */}
                 <div>
-                    <label>Temporada de la Actividad</label>
+                    <label>Temporada de la Actividad </label>
                     <select
-                        value={valueInput.season.name}
+                        value={valueInput.season.value}
                         onChange={e => handleChange(e)}
+                        name={'season'}
                     >
-                        {valueInput.season.map((s) => (
-                            <option key={s.name} value={s.name}>
+                        {seasons.map((s) => (
+                            <option key={s.name} value={s.value}>
                                 {s.name}
                             </option>))
                         }
                     </select>
                 </div>
                 <div>
-                    <label>Pais</label>
-                    <select
-                        value={valueInput.country.name}
-                        onChange={e => handleChange(e)}
-                    >
-                        {valueInput.country.map((c) => (
-                            <option key={c.name} value={c.name}>
-                                {c.name}
-                            </option>))
-                        }
-                    </select>
+                    <div>
+                        <label>Pais</label>
+                        <select
+                            value={valueInput.searchCountry}
+                            onChange={e => handleSelect(e)}
+                            name={'searchCountry'}
+                        //multiple={true}
+                        >
+                            {countries.map((c) => (
+                                <option
+                                    key={c.id}
+                                    value={c.id}
+                                >
+                                    {c.name}
+                                </option>
+                            ))
+                            }
+                        </select>
+                        {/* {console.log('id a enviar', valueInput.searchCountry)} */}
+
+                    </div>
                 </div>
+                {/*<FormTodoCountries*/}
+                {/*    // id={valueInput.searchCountry.id}*/}
+                {/*    // name={valueInput.searchCountry.name}*/}
+                {/*    // flag={valueInput.searchCountry.flag}*/}
+                {/*    value={valueInput.searchCountry}*/}
+                {/*    onClose={onClose} />*/}
+
                 <input className={styles.formButton} type={'submit'} value={'Crea tu Actividad'} />
             </form>
         </div>

@@ -90,10 +90,12 @@ const Countries = () => {
     }
 
     const onSearchChange = (e) => {
+        e.preventDefault()
         setCurrent({ page: 0, search: e.target.value })
     }
 
-    const onSubmit = () => {
+    const onSubmit = (e) => {
+        e.preventDefault()
         if (current.search.length === 0) return alert('Debe colocar un Pais')
         setCurrent({ ...current, search: '' });
     }
@@ -117,7 +119,7 @@ const Countries = () => {
                     <Pagination nextpage={nextPage} prevPage={prevPage} />
                 </div>
             </React.StrictMode>
-            <h1>Paises</h1>
+            <h1>Países</h1>
             <CountryList countries={countriesFilteredByName()} />
 
             {/* {

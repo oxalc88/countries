@@ -1,11 +1,8 @@
 import axios from "axios";
-import { FILTER_CONTINENT, GET_COUNTRY_BY_NAME, SET_COUNTRIES, SET_COUNTRY_DETAIL, SET_PAGES, ORDER_COUNTRIES_BY_POPULATION_ASC, ORDER_COUNTRIES_BY_NAME_ASC, ORDER_COUNTRIES_BY_NAME_DESC, ORDER_COUNTRIES_BY_POPULATION_DESC, SEARCH_COUNTRY_BY_NAME } from "./types";
-const { REACT_APP_API_URL } = process.env
+import { FILTER_CONTINENT, SET_COUNTRIES, SET_COUNTRY_DETAIL, ORDER_COUNTRIES_BY_POPULATION_ASC, ORDER_COUNTRIES_BY_NAME_ASC, ORDER_COUNTRIES_BY_NAME_DESC, ORDER_COUNTRIES_BY_POPULATION_DESC, CREATE_ACTIVITY } from "./types";
+const { REACT_APP_API_URL, REACT_APP_API_POST } = process.env
 
-// export const setCountries = (payload) => ({
-//     type: SET_COUNTRIES,
-//     payload,
-// })
+
 
 export const setCountries = () => async (dispatch) => {
     try {
@@ -15,7 +12,7 @@ export const setCountries = () => async (dispatch) => {
             payload: countries.data,
         });
     } catch (err) {
-        return Error(err.message);
+        throw new Error(err.message);
     }
 }
 
@@ -28,7 +25,7 @@ export const CountryDetailed = (id) => async (dispatch) => {
             payload: getDetail.data,
         });
     } catch (error) {
-        return console.error(error);
+        throw new Error(error.message);
     }
 };
 
@@ -80,12 +77,26 @@ export const filterByContinent = (payload) => {
     }
 }
 
-export const setPages = (payload) => ({
-    type: SET_PAGES,
-    payload
-})
+// export const setPages = (payload) => ({
+//     type: SET_PAGES,
+//     payload
+// })
 
-export const onSearchChange = (payload) => ({
-    type: SEARCH_COUNTRY_BY_NAME,
-    payload
-})
+// export const onSearchChange = (payload) => ({
+//     type: SEARCH_COUNTRY_BY_NAME,
+//     payload
+// })
+
+export const createActivity = (payload) => async (dispatch) => {
+    console.log('payload', payload);
+    try {
+        const activityResponse = await axios.post(REACT_APP_API_POST, payload);
+        console.log(activityResponse);
+        return dispatch({
+            type: CREATE_ACTIVITY,
+            payload: activityResponse,
+        });
+    } catch (error) {
+        throw new Error(error.message);
+    }
+};
