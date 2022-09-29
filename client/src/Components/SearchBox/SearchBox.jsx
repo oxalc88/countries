@@ -1,8 +1,8 @@
-import React from 'react'
+import styles from './search.module.css'
 
 function SearchBox({ value, onchange, onSubmit }) {
     return (
-        <form onSubmit={onSubmit}>
+        <div onSubmit={onSubmit} className={styles.search} >
             <input
                 type='text'
                 placeholder='Busca tu pais'
@@ -10,9 +10,10 @@ function SearchBox({ value, onchange, onSubmit }) {
                 onChange={onchange}
                 name='input'
                 autoComplete='off'
+                className={styles.searchTerm}
             />
 
-        </form>
+        </div>
     )
 }
 

@@ -12,7 +12,7 @@ function App() {
     <div>
       <Nav />
       <Switch>
-        <Route exact path='/' render={() => <Home name={'Oxalc'} />} />
+        <Route exact path='/' render={() => <Home name={'Amigos'} />} />
         <Route exact path='/countries' component={Countries} />
         <Route path='/countries/:id' component={CountryDetail} />
         <Route path='/activities' component={Activities} />

@@ -3,14 +3,14 @@ const { Op } = require("sequelize");
 const { COUNTRY_API } = process.env
 const axios = require('axios').default;
 
-const searchAll = async (req, res, next) => {
-    try {
-        const countries = await Country.findAll()
-        res.send(countries);
-    } catch (error) {
-        next(error);
-    }
-};
+// const searchAll = async (req, res, next) => {
+//     try {
+//         const countries = await Country.findAll()
+//         res.send(countries);
+//     } catch (error) {
+//         next(error);
+//     }
+// };
 
 
 
@@ -18,7 +18,15 @@ const lookingForCountry = async (req, res, next) => {
     const { name } = req.query;
     try {
         if (!name) {
-            const countries = await Country.findAll()
+            const countries = await Country.findAll({
+                include: {
+                    model: Activity,
+                    attributes: ['name', 'difficulty', 'duration', 'season'],
+                    through: {
+                        attributes: [],
+                    }
+                }
+            })
             res.send(countries);
         }
 

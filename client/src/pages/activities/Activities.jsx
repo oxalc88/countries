@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import FormInput from '../../Components/Form/FormInput'
-import FormTodoCountries from '../../Components/Form/FormTodoCountries';
-import { createActivity, orderByNameAsc, setCountries } from '../../redux/actions';
+import { createActivity, setCountries } from '../../redux/actions';
 import styles from './activities.module.css'
 
 function Activities() {
@@ -17,8 +16,8 @@ function Activities() {
         difficulty: 1,
         duration: 1,
         season: [],
-        searchCountry: '',
-        //countryId: ''
+        //searchCountry: [],
+        countryId: []
 
     })
 
@@ -37,10 +36,10 @@ function Activities() {
         dispatch(createActivity(valueInput))
         setValueInput({
             name: '',
-            difficulty: '',
-            duration: '',
+            difficulty: 1,
+            duration: 1,
             season: [],
-            searchCountry: '',
+            countryId: [],
         })
     }
 
@@ -60,22 +59,22 @@ function Activities() {
     }
 
     let handleSelect = (e) => {
-        const countryFiltered = countries.filter(country => country.id === e.target.value)
+        // const countryFiltered = countries.filter(country => country.id === e.target.value)
         // const order = dispatch(orderByNameAsc())
         // const countryFiltered = order.filter(country => country.id === e.target.value);
         e.preventDefault();
-        setValueInput((prev) => ({ ...prev, searchCountry: e.target.value, }))
+        setValueInput((prev) => ({ ...prev, countryId: [...valueInput.countryId, e.target.value], }))
     }
 
-    const onSearchChange = (e) => {
-        e.preventDefault()
-        setValueInput({ ...valueInput, searchCountry: e.target.value })
-    }
+    // const onSearchChange = (e) => {
+    //     e.preventDefault()
+    //     setValueInput({ ...valueInput, searchCountry: e.target.value })
+    // }
 
-    const onClose = (id) => {
-        const discardCountries = valueInput.setCountries.filter(dc => dc.id !== id)
-        setValueInput({ ...valueInput, searchCountry: discardCountries })
-    }
+    // const onClose = (id) => {
+    //     const discardCountries = valueInput.setCountries.filter(dc => dc.id !== id)
+    //     setValueInput({ ...valueInput, searchCountry: discardCountries })
+    // }
 
     useEffect(() => {
         dispatch(setCountries())
@@ -117,12 +116,13 @@ function Activities() {
                     errorMessage={validator.errornumber}
 
                 />
-                <div>
+                <div className={styles.box}>
                     <label>Temporada de la Actividad </label>
                     <select
                         value={valueInput.season.value}
                         onChange={e => handleChange(e)}
                         name={'season'}
+                    // className={styles.box}
                     >
                         {seasons.map((s) => (
                             <option key={s.name} value={s.value}>
@@ -131,16 +131,22 @@ function Activities() {
                         }
                     </select>
                 </div>
+
                 <div>
-                    <div>
+                    <div className={styles.box}>
                         <label>Pais</label>
                         <select
-                            value={valueInput.searchCountry}
+                            value={valueInput.countryId}
                             onChange={e => handleSelect(e)}
-                            name={'searchCountry'}
-                        //multiple={true}
+                            name={'countryId'}
+                            multiple={true}
+                        //className={styles.box}
                         >
-                            {countries.map((c) => (
+                            {countries?.sort(function (a, b) {
+                                if (a.name < b.name) return -1;
+                                if (a.name > b.name) return 1;
+                                return 0;
+                            }).map((c) => (
                                 <option
                                     key={c.id}
                                     value={c.id}

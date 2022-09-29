@@ -1,5 +1,5 @@
 import axios from "axios";
-import { FILTER_CONTINENT, SET_COUNTRIES, SET_COUNTRY_DETAIL, ORDER_COUNTRIES_BY_POPULATION_ASC, ORDER_COUNTRIES_BY_NAME_ASC, ORDER_COUNTRIES_BY_NAME_DESC, ORDER_COUNTRIES_BY_POPULATION_DESC, CREATE_ACTIVITY } from "./types";
+import { FILTER_CONTINENT, SET_COUNTRIES, SET_COUNTRY_DETAIL, ORDER_COUNTRIES_BY_POPULATION_ASC, ORDER_COUNTRIES_BY_NAME_ASC, ORDER_COUNTRIES_BY_NAME_DESC, ORDER_COUNTRIES_BY_POPULATION_DESC, CREATE_ACTIVITY, FILTER_ACTIVITY, SET_ACTIVITIES } from "./types";
 const { REACT_APP_API_URL, REACT_APP_API_POST } = process.env
 
 
@@ -16,6 +16,17 @@ export const setCountries = () => async (dispatch) => {
     }
 }
 
+export const setActivities = () => async (dispatch) => {
+    try {
+        const activities = await axios.get(REACT_APP_API_POST);
+        return dispatch({
+            type: SET_ACTIVITIES,
+            payload: activities.data,
+        });
+    } catch (err) {
+        throw new Error(err.message);
+    }
+}
 
 export const CountryDetailed = (id) => async (dispatch) => {
     try {
@@ -28,19 +39,6 @@ export const CountryDetailed = (id) => async (dispatch) => {
         throw new Error(error.message);
     }
 };
-
-
-// export const searchCountryByName = (name) => async (dispatch) => {
-//     try {
-//         const getCountryName = axios.get(`${REACT_APP_API_URL}/?name=${name}`);
-//         return dispatch({
-//             type: GET_COUNTRY_BY_NAME,
-//             payload: getCountryName.data,
-//         });
-//     } catch (error) {
-//         return console.error(error.message);
-//     }
-// };
 
 export const orderByNameAsc = (payload) => {
     return {
@@ -77,26 +75,23 @@ export const filterByContinent = (payload) => {
     }
 }
 
-// export const setPages = (payload) => ({
-//     type: SET_PAGES,
-//     payload
-// })
-
-// export const onSearchChange = (payload) => ({
-//     type: SEARCH_COUNTRY_BY_NAME,
-//     payload
-// })
+export const filterByActivity = (payload) => {
+    return {
+        type: FILTER_ACTIVITY,
+        payload,
+    }
+}
 
 export const createActivity = (payload) => async (dispatch) => {
     console.log('payload', payload);
     try {
-        const activityResponse = await axios.post(REACT_APP_API_POST, payload);
-        console.log(activityResponse);
+        await axios.post(REACT_APP_API_POST, payload);
+
         return dispatch({
             type: CREATE_ACTIVITY,
-            payload: activityResponse,
         });
     } catch (error) {
+        console.log(error)
         throw new Error(error.message);
     }
 };

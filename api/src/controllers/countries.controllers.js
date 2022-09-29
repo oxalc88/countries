@@ -3,11 +3,8 @@ const { Op } = require("sequelize");
 const { searchAll, searchByName, countriesByApi, lookingForCountry } = require('../services/countries.service');
 
 const getCountries = async (req, res, next) => {
-    //const { name } = req.query;
     const count = await Country.count()
     if (count === 0) return countriesByApi()
-    // else if (!name) return searchAll(req, res, next)
-    // else return searchByName(req, res, next, name)
     return lookingForCountry(req, res, next)
 }
 

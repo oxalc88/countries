@@ -84,15 +84,17 @@
 }
 
 .country_back {
-    background: #FBCA1F;
+    background: rgba(22, 3, 70, 0.7);
+    color: rgb(231, 225, 253);
     font-family: inherit;
     padding: 0.6em 1.3em;
     font-weight: 900;
-    font-size: 18px;
-    border: 3px solid black;
+    font-size: 1.2em;
+    border: 0.1em solid rgb(231, 225, 253);
     border-radius: 0.4em;
     box-shadow: 0.1em 0.1em;
     cursor: pointer;
+    text-decoration: none;
 }
 
 .country_back:hover {

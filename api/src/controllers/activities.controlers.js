@@ -1,19 +1,19 @@
 const { Country, Activity, CountryActivity } = require('../db');
 const { Op } = require("sequelize");
+const { lookingForCountry } = require('../services/countries.service');
 
 const getAllActivities = async (req, res, next) => {
     try {
         const activities = await Activity.findAll()
         res.send(activities);
     } catch (error) {
-        // res.status(404).json({
-        //     error: error.message
-        // })
         next(error);
     }
 };
 
 const createActivity = async (req, res, next) => {
+
+    // await lookingForCountry()
     const { name, difficulty, duration, season, countryId } = req.body
     try {
         const newActivity = await Activity.create({
@@ -21,27 +21,25 @@ const createActivity = async (req, res, next) => {
             difficulty,
             duration,
             season,
-            countryId,
+            // countryId,
         }
         );
-        //const ifActivityExits = await Activity.findOne
-        // const [newActivity, created] = await Activity.findOrCreate({
-        //     where: {
-        //         name,
-        //         difficulty,
-        //         duration,
-        //         season,
-        //     }
-        // })
-        //buscando el país a añadir
-        const countryToAdd = await Country.findByPk(countryId)
+        console.log('Id recibido', countryId);
+        const countryToAdd = await Country.findAll({
+            where: {
+                id: countryId
+            }
+        })
 
-        newActivity.addCountry(countryToAdd, { through: CountryActivity })
+        const toSend = await newActivity.addCountries(countryToAdd, { through: CountryActivity })
 
-        res.send(newActivity)
+        res
+            .send(toSend)
+            .json({ msg: 'Actividad Creada' })
 
     } catch (error) {
         next(error)
+        //console.log(error.message);
     }
 }
 

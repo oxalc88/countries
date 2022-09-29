@@ -1,10 +1,11 @@
 import React from 'react'
 import DropdownItem from './DropdownItem'
+import styles from './dropdown.module.css'
 
 function Dropdown({ value, onChange, options, label, name, valueToFilter }) {
 
     return (
-        <div>
+        <div className={styles.box}>
             <label>
                 {label}
                 <select value={value} onChange={onChange} name={name}>

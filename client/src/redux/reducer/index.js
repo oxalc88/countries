@@ -1,4 +1,4 @@
-import { CREATE_ACTIVITY, FILTER_CONTINENT, IS_LOADING, ORDER_COUNTRIES_BY_NAME_ASC, ORDER_COUNTRIES_BY_NAME_DESC, ORDER_COUNTRIES_BY_POPULATION_ASC, ORDER_COUNTRIES_BY_POPULATION_DESC, SET_COUNTRIES, SET_COUNTRY_DETAIL } from "../actions/types"
+import { CREATE_ACTIVITY, FILTER_ACTIVITY, FILTER_CONTINENT, IS_LOADING, ORDER_COUNTRIES_BY_NAME_ASC, ORDER_COUNTRIES_BY_NAME_DESC, ORDER_COUNTRIES_BY_POPULATION_ASC, ORDER_COUNTRIES_BY_POPULATION_DESC, SET_ACTIVITIES, SET_COUNTRIES, SET_COUNTRY_DETAIL } from "../actions/types"
 
 const initialState = {
     countries: [],
@@ -22,6 +22,12 @@ export const rootReducer = (state = initialState, action) => {
             return {
                 ...state,
                 countryDetailed: action.payload
+            };
+
+        case SET_ACTIVITIES:
+            return {
+                ...state,
+                activities: action.payload,
             };
 
         case ORDER_COUNTRIES_BY_NAME_ASC:
@@ -65,11 +71,20 @@ export const rootReducer = (state = initialState, action) => {
                 countries: filteredContient
             }
 
+        case FILTER_ACTIVITY:
+            let filteredByActivity = state.filteredContinent
+            let countryByActivity = filteredByActivity.filter(country => country.activities?.some(a => a.name === action.payload))
+
+            if (action.payload === 'Todas') return { ...state, countries: filteredByActivity }
+            return {
+                ...state,
+                countries: countryByActivity
+            }
+
 
         case CREATE_ACTIVITY:
             return {
                 ...state,
-                activities: action.payload
             }
 
         case IS_LOADING:

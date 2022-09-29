@@ -4,7 +4,7 @@
 }
 
 input {
-    padding: 1em;
+    padding: 1em 3em;
     margin: 0.625em 0em;
     width: 17.5em;
     border: 0.0625em solid rgb(77, 77, 77);
@@ -14,7 +14,7 @@ input {
 
 
 label {
-    font-size: 0.78em;
+    font-size: .9em;
     color: rgb(77, 77, 77);
 }
 
