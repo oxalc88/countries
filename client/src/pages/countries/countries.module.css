@@ -1,0 +1,27 @@
+.countries {
+    background-color: rgba(245, 245, 245, 0.63);
+    /* background-color: rgba(50, 48, 56, 0.7), */
+    /* background: linear-gradient(rgba(161, 159, 166, 0.7),
+            rgba(81, 81, 81, 0.3)),
+        url('../../../src/assets/fondeHome.jpg'); */
+}
+
+.navCountries {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0.2em 5em;
+}
+
+.navCountries2 {
+    flex-direction: row;
+    justify-content: space-around;
+    gap: 4em;
+}
+
+.navCountries3 {
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    align-items: center;
+}

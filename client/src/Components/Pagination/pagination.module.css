@@ -1,0 +1,48 @@
+.Pagination {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.PaginationItem {
+    background: #fff;
+    border: 2px solid #666;
+    padding: 10px 15px;
+    border-radius: 50%;
+    height: 45px;
+    width: 45px;
+    position: relative;
+    margin: 0 5px;
+    cursor: pointer;
+}
+
+.paginationItem span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.prev,
+.next {
+    background: rgba(22, 3, 70, 0.7);
+    border: none;
+    padding: 1.2em;
+    color: rgb(231, 225, 253);
+    box-shadow: 0 0 .125em rgba(0, 0, 0, 0.4);
+    margin: 0 .8em;
+    cursor: pointer;
+}
+
+.paginationItem.active {
+    border: 1px solid #888;
+    color: #888;
+    pointer-events: none;
+}
+
+.prev.disabled,
+.next.disabled {
+    pointer-events: none;
+    box-shadow: none;
+    color: #999;
+}

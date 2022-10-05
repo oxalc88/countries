@@ -1,0 +1,44 @@
+:root {
+    --bg: #242526;
+    --bg-accent: #484a4d;
+    --text-color: #dadce1;
+    --nav-size: 60px;
+    --border: 1px solid #474a4d;
+    --border-radius: 8px;
+    --speed: 500ms;
+}
+
+.box {
+    display: flex;
+    flex-direction: column;
+    margin: .15em;
+    font-size: 0.78em;
+    /* position: absolute; */
+    /* top: 50%;
+    left: 50%; */
+    font-size: 1.2em;
+    /* transform: translate(-50%, -50%); */
+}
+
+.box select {
+    background-color: rgba(22, 3, 70, 0.7);
+    color: rgb(231, 225, 253);
+    padding: 0.8em;
+    width: 23.5em;
+    font-size: .75em;
+    border: none;
+    margin: 0.5em 0.15em;
+    box-shadow: 0 0.4em 2em rgba(0, 0, 0, 0.2);
+    -webkit-appearance: button;
+    appearance: button;
+    outline: none;
+}
+
+.box:hover {
+    color: rgba(255, 255, 255, 0.6);
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.box select option {
+    padding: 2em;
+}

@@ -1,0 +1,19 @@
+.search {
+    width: 100%;
+    position: relative;
+    display: flex;
+    margin: 1.5em;
+}
+
+.searchTerm {
+    width: 100%;
+    border: 0.125em solid rgba(22, 3, 70, 0.7);
+    padding: 0.8em;
+    height: 1.5em;
+    border-radius: 0.25em 0.25em;
+    color: rgba(22, 3, 70, 0.7);
+}
+
+.searchTerm:focus {
+    color: rgba(22, 3, 70, 0.7);
+}
