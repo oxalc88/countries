@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import CountryList from '../../Components/CountryList/CountryList';
 import { filterByActivity, filterByContinent, orderByNameAsc, orderByNameDesc, orderByPopulationAsc, orderByPopulationDesc, setActivities, setCountries } from '../../redux/actions';
-import Loading from '../../Components/Loading/Loading';
+// import Loading from '../../Components/Loading/Loading';
 import { Pagination } from '../../Components/Pagination/Pagination';
 import SearchBox from '../../Components/SearchBox/SearchBox';
 import Dropdown from '../../Components/Dropdown/Dropdown';
@@ -11,7 +11,7 @@ import style from './countries.module.css'
 const Countries = () => {
 
     const countries = useSelector(state => state.countries);
-    const isLoading = useSelector(state => state.isLoading);
+    // const isLoading = useSelector(state => state.isLoading);
     const activities = useSelector(state => state.activities);
 
     const dispatch = useDispatch();

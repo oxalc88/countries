@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, NavLink, useParams } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
 import { ButtonBack } from '../../Components/Buttons/Buttons';
 import ActivitiesContainer from '../../Components/CountryDetail/DetailContainer';
 import { CountryDetailed } from '../../redux/actions';

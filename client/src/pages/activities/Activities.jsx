@@ -43,7 +43,7 @@ function Activities() {
         })
     }
 
-    const letters = '^[a-zA-Z\s]*$'
+    const letters = '^[a-zA-Zs]*$'
 
     const validator = {
         errorname: 'Ingresar solo letras y no dejar vacío',
